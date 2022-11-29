@@ -1,10 +1,9 @@
 import uvicorn
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
-import mongo
-from user_model import UserModel
+import user_api
 
 app = FastAPI(docs_url="/")
 security = HTTPBasic()
@@ -20,14 +19,7 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/register")
-async def register_user(user: UserModel):
-    user_db = await mongo.do_find_user(user.username)
-    if user_db:
-        raise HTTPException(400, f"user with username {user.username} already exists")
-    else:
-        await mongo.insert_user(user)
-        return {"message": "user registered"}
+app.include_router(user_api.router)
 
 
 if __name__ == '__main__':

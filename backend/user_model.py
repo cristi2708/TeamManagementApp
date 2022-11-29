@@ -7,3 +7,8 @@ class UserModel(BaseModel):
     email: str
     password_hash: str
     phone_number: str
+
+
+class UserLoginModel(BaseModel):
+    username: str
+    password: str
