@@ -22,16 +22,6 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/profile/me")
-async def get_my_profile(x_username: Union[str, None] = Header(default=None)):
-    return await mongo.do_find_user(x_username)
-
-
-@app.get("/profile/{username}")
-async def get_user_profile(username: str):
-    return await mongo.do_find_user(username)
-
-
 app.include_router(user_api.router)
 
 
