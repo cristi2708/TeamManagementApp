@@ -1,11 +1,8 @@
-from typing import Union
-
 import uvicorn
-
-from fastapi import Depends, FastAPI, Header
+from fastapi import Depends, FastAPI
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
-import mongo
+import team_api
 import user_api
 
 app = FastAPI(docs_url="/")
@@ -23,6 +20,7 @@ async def root():
 
 
 app.include_router(user_api.router)
+app.include_router(team_api.router)
 
 
 if __name__ == '__main__':
