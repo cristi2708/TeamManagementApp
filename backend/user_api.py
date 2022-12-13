@@ -10,7 +10,6 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/register")
 async def register_user(user: UserModel):
-    """expects a post request to the /users/register route with the body of a user model in json format"""
     user_db = await mongo.do_find_user(user.username)
     if user_db:
         raise HTTPException(400, f"user with username {user.username} already exists")

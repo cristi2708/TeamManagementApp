@@ -10,9 +10,9 @@ router = APIRouter(prefix="/teams", tags=["teams"])
 
 @router.post("/create")
 async def add_team(team: TeamModel):
-    team_db = await mongo.do_find_team(team.team_name)
+    team_db = await mongo.do_find_team(team._id)
     if team_db:
-        raise HTTPException(400, f"team with the name {team.team_name} already exists")
+        raise HTTPException(400, f"team with the name {team._id} already exists")
 
     # team lead validation
     lead_exists: bool = await mongo.do_find_team_lead(team.team_lead_name)
@@ -30,4 +30,29 @@ async def add_team(team: TeamModel):
             raise HTTPException(400, f"employee named {employee} cannot be found")
 
     await mongo.insert_team(team)
-    return {"message": f"team named {team.team_name} created"}
+    return {"message": f"team named {team._id} created"}
+
+
+@router.put("/add_member/{team_name}")
+async def add_team_member(team_name: str, employee: str):
+    updated = False
+    is_valid_employee: bool = await mongo.do_find_employee(employee)
+    team_db: TeamModel = await mongo.do_find_team(team_name)
+
+    # check if the team does not have that employee already
+    if is_valid_employee and team_db is not None and employee not in team_db.employees:
+        updated: bool = await mongo.add_employee_to_team(team_name, employee)
+    if not updated:
+        raise HTTPException(400, f"unable to add employee {employee} to team {team_name}")
+
+    return {"message": f"employee: {employee} added to team: {team_name}"}
+
+
+@router.put("/delete_member/{team_name}")
+async def remove_team_member(team_name: str, employee: str):
+    updated: bool = await mongo.remove_employee_from_team(team_name, employee)
+    if not updated:
+        raise HTTPException(400, f"unable to remove employee {employee} from team {team_name}")
+
+    return {"message": f"employee: {employee} removed from team: {team_name}"}
+
