@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from typing import Union
+
+from fastapi import APIRouter, HTTPException, Header
 
 import mongo
-from user_model import UserModel, UserLoginModel
+from models.user_model import UserModel, UserLoginModel
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -18,13 +20,18 @@ async def register_user(user: UserModel):
 
 @router.post("/login")
 async def login_user(user: UserLoginModel):
-    # 200 if password from request matches with password from db
-    # 401 if password don't match
-    # 401 if user not found
-
     user_from_db = await mongo.do_find_user(user.username)
     if not user_from_db or user_from_db.password_hash != user.password:
         raise HTTPException(401, f"invalid credentials")
     else:
         return {"message": "user logged in successfully!"}
 
+
+@router.get("/profile/me")
+async def get_my_profile(x_username: Union[str, None] = Header(default=None)):
+    return await mongo.do_find_user(x_username)
+
+
+@router.get("/profile/{username}")
+async def get_user_profile(username: str):
+    return await mongo.do_find_user(username)
