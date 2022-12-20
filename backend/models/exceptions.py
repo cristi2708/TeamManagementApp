@@ -1,0 +1,3 @@
+
+class DatabaseOperationFailed(Exception):
+    pass

@@ -4,7 +4,7 @@ import typing
 import motor.motor_asyncio
 import pymongo.results
 
-from models import user_model, team_model
+from models import user_model, team_model, task_model, exceptions
 
 client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')
 db = client.app_database
@@ -56,11 +56,35 @@ async def insert_team(team: team_model.TeamModel):
     return result
 
 
+async def insert_task(task: task_model.TaskModel):
+    try:
+        result = await db.tasks.insert_one(task.dict())
+        return result
+    except pymongo.errors.PyMongoError as e:
+        raise exceptions.DatabaseOperationFailed("unable to write document to db") from e
+
+
 async def do_find_team(team_name: str) -> team_model.TeamModel or None:
     document = await db.teams.find_one({'_id': team_name})
     if document is not None:
+        # replace _id key with team_name
+        team_name = document['_id']
+        del document['_id']
+        document['team_name'] = team_name
         return team_model.TeamModel(**document)
     return None
+
+
+async def find_tasks(assignee: str) -> typing.List[task_model.TaskModel]:
+    task_list = []
+    try:
+        cursor = db.tasks.find({"assignee": assignee})
+        document_list = await cursor.to_list(length=100)
+        for document in document_list:
+            task_list.append(task_model.TaskModel(**document))
+        return task_list
+    except pymongo.errors.PyMongoError as e:
+        raise exceptions.DatabaseOperationFailed("unable to retrieve tasks") from e
 
 
 async def is_team_lead_free(lead_name: str) -> bool:
@@ -74,13 +98,15 @@ async def is_team_lead_free(lead_name: str) -> bool:
 
 async def add_employee_to_team(team_name: str, employee: str) -> bool:
     """ update the employees list of a specific team """
-    update_result: pymongo.results.UpdateResult = await db.teams.update_one({'_id': team_name}, {'$push': {'employees': employee}})
+    update_result: pymongo.results.UpdateResult = await db.teams.update_one({'_id': team_name},
+                                                                            {'$push': {'employees': employee}})
     return update_result.modified_count > 0
 
 
 async def remove_employee_from_team(team_name: str, employee: str) -> bool:
     """ update the employees list of a specific team """
-    update_result: pymongo.results.UpdateResult = await db.teams.update_one({'_id': team_name}, {'$pull': {'employees': employee}})
+    update_result: pymongo.results.UpdateResult = await db.teams.update_one({'_id': team_name},
+                                                                            {'$pull': {'employees': employee}})
     return update_result.modified_count > 0
 
 
