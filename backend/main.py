@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
+import task_api
 import team_api
 import user_api
 
@@ -21,6 +22,7 @@ async def root():
 
 app.include_router(user_api.router)
 app.include_router(team_api.router)
+app.include_router(task_api.router)
 
 
 if __name__ == '__main__':

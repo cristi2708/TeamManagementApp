@@ -10,9 +10,9 @@ router = APIRouter(prefix="/teams", tags=["teams"])
 
 @router.post("/create")
 async def add_team(team: TeamModel):
-    team_db = await mongo.do_find_team(team._id)
+    team_db = await mongo.do_find_team(team.team_name)
     if team_db:
-        raise HTTPException(400, f"team with the name {team._id} already exists")
+        raise HTTPException(400, f"team with the name {team.team_name} already exists")
 
     # team lead validation
     lead_exists: bool = await mongo.do_find_team_lead(team.team_lead_name)
@@ -30,7 +30,7 @@ async def add_team(team: TeamModel):
             raise HTTPException(400, f"employee named {employee} cannot be found")
 
     await mongo.insert_team(team)
-    return {"message": f"team named {team._id} created"}
+    return {"message": f"team named {team.team_name} created"}
 
 
 @router.put("/add_member/{team_name}")
