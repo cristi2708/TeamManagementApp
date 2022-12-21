@@ -7,4 +7,6 @@ import androidx.room.PrimaryKey;
 
 
 public class CustomerModel {
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
 }
