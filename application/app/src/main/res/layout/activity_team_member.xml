@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/teamMemberActivityLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TeamMemberActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="330dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="First Name"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/firstNameTV"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="330dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Last Name"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="13dp"
+            tools:layout_editor_absoluteY="88dp" />
+
+        <TextView
+            android:id="@+id/lastNameTV"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="330dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/tv5"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Role"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/roleTV"
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/seeTasksButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="See Tasks"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="Log Out"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seeTasksButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

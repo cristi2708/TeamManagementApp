@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/taskNr"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:padding="@dimen/fab_margin"
+        android:text="Task Nr"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/taskDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:padding="@dimen/fab_margin"
+        android:text="Description"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/zoomButton"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:src="@android:drawable/checkbox_on_background"
+        android:text="Button" />
+
+    <ImageButton
+        android:id="@+id/doneButton"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:src="?android:attr/actionModeWebSearchDrawable"
+        android:text="Button" />
+
+</LinearLayout>
