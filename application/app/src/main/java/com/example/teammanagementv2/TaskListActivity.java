@@ -60,12 +60,14 @@ public class TaskListActivity extends AppCompatActivity {
                     TextView assignee = container.findViewById(R.id.desc);
                     TextView reporter = container.findViewById(R.id.reporter);
                     TextView dueDate = container.findViewById(R.id.dueDate);
+                    TextView objId = container.findViewById(R.id.objId);
 
                     assignee.setText(task.getDesc());
                     reporter.setText(task.getReporter());
                     dueDate.setText(task.getDueDate().toString());
+                    objId.setText(task.getId());
 
-                    PopupWindow popupWindow = new PopupWindow(container, 600, 600);
+                    PopupWindow popupWindow = new PopupWindow(container, 800, 800);
                     popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
                     container.setOnTouchListener(new View.OnTouchListener() {

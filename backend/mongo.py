@@ -1,6 +1,7 @@
 import asyncio
 import typing
 
+import bson
 import motor.motor_asyncio
 import pymongo.results
 
@@ -81,7 +82,10 @@ async def find_tasks(assignee: str) -> typing.List[task_model.TaskModel]:
         cursor = db.tasks.find({"assignee": assignee})
         document_list = await cursor.to_list(length=100)
         for document in document_list:
-            task_list.append(task_model.TaskModel(**document))
+            idd = str(document['_id'])
+            document.pop('_id', None)
+            document['id'] = idd
+            task_list.append(task_model.TaskModelRead(**document))
         return task_list
     except pymongo.errors.PyMongoError as e:
         raise exceptions.DatabaseOperationFailed("unable to retrieve tasks") from e
@@ -107,6 +111,12 @@ async def remove_employee_from_team(team_name: str, employee: str) -> bool:
     """ update the employees list of a specific team """
     update_result: pymongo.results.UpdateResult = await db.teams.update_one({'_id': team_name},
                                                                             {'$pull': {'employees': employee}})
+    return update_result.modified_count > 0
+
+
+async def complete_task(_id: bson.ObjectId) -> bool:
+    update_result: pymongo.results.UpdateResult = await db.tasks.update_one({'_id': _id},
+                                                                            {'$set': {'completed': True}})
     return update_result.modified_count > 0
 
 
