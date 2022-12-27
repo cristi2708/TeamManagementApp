@@ -120,6 +120,21 @@ async def complete_task(_id: bson.ObjectId) -> bool:
     return update_result.modified_count > 0
 
 
+async def find_employees() -> typing.List[user_model.UserModel]:
+    user_list = []
+    try:
+        cursor = db.users.find({"role": "employee"})
+        document_list = await cursor.to_list(length=100)
+        for document in document_list:
+            username = str(document['_id'])
+            document.pop('_id', None)
+            document['username'] = username
+            user_list.append(user_model.UserModel(**document))
+        return user_list
+    except pymongo.errors.PyMongoError as e:
+        raise exceptions.DatabaseOperationFailed("unable to retrieve employees") from e
+
+
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     asyncio.ensure_future(remove_employee_from_team("t5", "string"))

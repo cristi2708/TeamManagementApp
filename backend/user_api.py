@@ -35,3 +35,9 @@ async def get_my_profile(x_username: Union[str, None] = Header(default=None)):
 @router.get("/profile/{username}")
 async def get_user_profile(username: str):
     return await mongo.do_find_user(username)
+
+
+@router.get("/employees")
+async def get_employees():
+    return await mongo.find_employees()
+

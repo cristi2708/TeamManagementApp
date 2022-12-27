@@ -10,7 +10,7 @@ class Role(str, Enum):
 class UserModel(BaseModel):
     first_name: str
     last_name: str
-    username: str   # will act as a unique id in the users collection
+    username: str  # _id in the users collection
     password_hash: str  # the body of the request will contain the password hash not the actual password
     email: str  # the data validation will be performed at the java level
     phone_number: str
