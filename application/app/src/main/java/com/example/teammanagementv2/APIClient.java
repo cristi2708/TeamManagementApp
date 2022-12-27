@@ -19,7 +19,7 @@ import okhttp3.Response;
 
 public class APIClient {
 
-    private final String BASE_URL = "https://c93f-86-120-95-90.eu.ngrok.io" ;
+    private final String BASE_URL = "https://00e7-79-114-31-159.eu.ngrok.io" ;
     private final OkHttpClient client = new OkHttpClient();
     private static final ObjectMapper objectMapper = new ObjectMapper();
     public static final MediaType JSON
@@ -77,10 +77,6 @@ public class APIClient {
 
     public ArrayList<Task> fetchUserTasks(String username) throws IOException {
         ArrayList<Task> tasks = new ArrayList<Task>();
-//        tasks.add(new Task(1, "aaa", null, null, null));
-//        tasks.add(new Task(2, "bbb", null, null, null));
-        //return tasks;
-
         try {
             Request request = new Request.Builder()
                     .url(BASE_URL + "/tasks/find/" + username)

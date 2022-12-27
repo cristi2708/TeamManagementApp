@@ -1,4 +1,4 @@
-package com.example.teammanagementv2;
+package com.example.teammanagementv2.task_list_activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,13 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.teammanagementv2.R;
 import com.example.teammanagementv2.entities.Task;
 
 import java.util.ArrayList;

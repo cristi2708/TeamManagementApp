@@ -12,6 +12,19 @@ public class UserProfile {
     private String phoneNumber;
     private String role;
     public static final UserProfile NULL_PROFILE = new UserProfile();
+
+    public UserProfile(){}
+
+    public UserProfile(String firstName, String lastName, String username, String passwordHash, String email, String phoneNumber, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "UserProfile{" +
@@ -46,12 +59,12 @@ public class UserProfile {
     }
 
     @JsonGetter("username")
-    public String getId() {
+    public String getUsername() {
         return username;
     }
 
     @JsonSetter("username")
-    public void setId(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 

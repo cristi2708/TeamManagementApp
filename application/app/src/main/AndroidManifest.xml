@@ -16,14 +16,14 @@
         android:theme="@style/Theme.TeamManagementV2"
         tools:targetApi="31">
         <activity
-            android:name=".TaskListActivity"
+            android:name=".task_list_activity.TaskListActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".TeamMemberActivity"
+            android:name=".create_team_activity.ActivityCreateTeam"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -31,6 +31,13 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
