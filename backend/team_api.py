@@ -1,16 +1,19 @@
-from typing import List
+from typing import List, Union
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header
 
 import mongo
 from models.team_model import TeamModel
+from fastapi.responses import JSONResponse
+
+from models.user_model import Role
 
 router = APIRouter(prefix="/teams", tags=["teams"])
 
 
 @router.post("/create")
 async def add_team(team: TeamModel):
-    team_db = await mongo.do_find_team(team.team_name)
+    team_db = await mongo.find_team_by_name(team.team_name)
     if team_db:
         raise HTTPException(400, f"team with the name {team.team_name} already exists")
 
@@ -37,7 +40,7 @@ async def add_team(team: TeamModel):
 async def add_team_member(team_name: str, employee: str):
     updated = False
     is_valid_employee: bool = await mongo.do_find_employee(employee)
-    team_db: TeamModel = await mongo.do_find_team(team_name)
+    team_db: TeamModel = await mongo.find_team_by_name(team_name)
 
     # check if the team does not have that employee already
     if is_valid_employee and team_db is not None and employee not in team_db.employees:
@@ -55,4 +58,27 @@ async def remove_team_member(team_name: str, employee: str):
         raise HTTPException(400, f"unable to remove employee {employee} from team {team_name}")
 
     return {"message": f"employee: {employee} removed from team: {team_name}"}
+
+
+from models import user_model, team_model
+
+
+@router.get("/me")
+async def get_my_team(x_username: Union[str, None] = Header(default=None)):
+    """returns the team that is associated with the logged-in user"""
+    user: user_model = await mongo.find_user(x_username)
+    if not user:
+        raise HTTPException(400, f"{x_username} not found in the database")
+    elif user.role == Role.LEAD:
+        team: team_model = await mongo.find_team_by_lead(x_username)
+        if not team:
+            raise HTTPException(400, f"{x_username} does not belong to any team")
+        else:
+            return team
+    elif user.role == Role.EMPLOYEE:
+        try:
+            team: team_model = await mongo.find_team_of_employee(x_username)
+            return team
+        except Exception as e:
+            raise HTTPException(400, f"{x_username} does not belong to any team or it belongs to more than 1 teams") from e
 

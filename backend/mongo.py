@@ -1,17 +1,19 @@
 import asyncio
 import typing
+from typing import List
 
 import bson
 import motor.motor_asyncio
 import pymongo.results
 
 from models import user_model, team_model, task_model, exceptions
+from models.task_model import TaskModelRead
 
 client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017')
 db = client.app_database
 
 
-async def do_find_user(username: str) -> typing.Optional[user_model.UserModel]:
+async def find_user(username: str) -> typing.Optional[user_model.UserModel] | None:
     document = await db.users.find_one({'_id': username})
 
     if document is not None:
@@ -65,7 +67,7 @@ async def insert_task(task: task_model.TaskModel):
         raise exceptions.DatabaseOperationFailed("unable to write document to db") from e
 
 
-async def do_find_team(team_name: str) -> team_model.TeamModel or None:
+async def find_team_by_name(team_name: str) -> team_model.TeamModel or None:
     document = await db.teams.find_one({'_id': team_name})
     if document is not None:
         # replace _id key with team_name
@@ -76,7 +78,36 @@ async def do_find_team(team_name: str) -> team_model.TeamModel or None:
     return None
 
 
-async def find_tasks(assignee: str) -> typing.List[task_model.TaskModel]:
+async def find_team_by_lead(lead_name: str):
+    """assume only one team per team_lead"""
+    document = await db.teams.find_one({'team_lead_name': lead_name})
+    if document is not None:
+        # replace _id key with team_name
+        team_name = document['_id']
+        del document['_id']
+        document['team_name'] = team_name
+        return team_model.TeamModel(**document)
+    return None
+
+
+async def find_team_of_employee(employee_name: str):
+    teams = []
+    cursor = db.teams.find({})
+    doc_list = await cursor.to_list(length=100)
+    for doc in doc_list:
+        if employee_name in doc['employees']:
+            # replace _id key with team_name
+            team_name = doc['_id']
+            del doc['_id']
+            doc['team_name'] = team_name
+            teams.append(doc)
+    if len(teams) != 1:
+        raise Exception(f"employee {employee_name} belongs to more than 1 team or to no teams")
+    else:
+        return teams[0]
+
+
+async def find_tasks(assignee: str) -> list[TaskModelRead]:
     task_list = []
     try:
         cursor = db.tasks.find({"assignee": assignee})
