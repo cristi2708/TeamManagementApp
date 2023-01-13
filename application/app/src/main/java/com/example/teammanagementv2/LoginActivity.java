@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.loginButton);
         signUpButton = findViewById(R.id.signUpButton);
@@ -62,13 +62,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String  usernameInput = username.getText().toString();
                 String  passwordInput = password.getText().toString();
-                Toast.makeText(getApplicationContext(), "user inputted " + usernameInput + " " + passwordInput,
-                        Toast.LENGTH_LONG).show();
+
 
                 // perform username, password validation
                 if (usernameInput.length() > 5 && passwordInput.length() > 5) {
-                    Toast.makeText(getApplicationContext(), "valid user and pass, will send a post request to server",
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "valid user and pass, will send a post request to server",
+//                            Toast.LENGTH_LONG).show();
                     AtomicReference<Boolean> api_response = new AtomicReference<>(false);
                     try {
                         apiClient.loginUserAsync(usernameInput, passwordInput, new Callback() {

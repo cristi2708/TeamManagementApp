@@ -12,7 +12,7 @@ public class Task {
     private String assignee;
     private String reporter;
     private LocalDateTime dueDate;
-    private Boolean completed;
+    private boolean completed;
     private String id;
 
     @JsonGetter("id")
@@ -26,7 +26,7 @@ public class Task {
     }
 
     @JsonGetter("completed")
-    public Boolean getCompleted() {
+    public boolean getCompleted() {
         return completed;
     }
 

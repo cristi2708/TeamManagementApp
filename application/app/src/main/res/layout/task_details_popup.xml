@@ -1,49 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center|center_vertical"
     android:background="@drawable/custom_border"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    android:outlineProvider="paddedBounds">
+    android:outlineProvider="paddedBounds"
+    android:paddingBottom="@dimen/fab_margin"
+    app:layout_anchorGravity="center">
 
     <TextView
-        android:id="@+id/desc"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:gravity="center"
-        android:padding="@dimen/fab_margin"
-        android:text="Desc"
-        android:textSize="20sp" />
+        android:gravity="center_vertical"
+        android:text="Description:"
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/reporter"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:layout_weight="0"
-        android:gravity="center"
-        android:padding="@dimen/fab_margin"
-        android:text="Reporter"
-        android:textSize="20sp" />
+        android:layout_height="80dp"
+        android:layout_marginBottom="@dimen/fab_margin">
 
-    <TextView
-        android:id="@+id/dueDate"
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp" />
+
+    </ScrollView>
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:gravity="center"
-        android:text="Due Date"
-        android:textSize="20sp" />
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/fab_margin">
 
-    <TextView
-        android:id="@+id/objId"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center_vertical"
+            android:text="Reporter:"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reporter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/fab_margin"
+            android:text="Reporter"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:gravity="center"
-        android:text="TextView"
-        android:textSize="20sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/fab_margin"
+            android:text="Due Date:"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/fab_margin"
+            android:text="Due Date"
+            android:textSize="13sp" />
+    </LinearLayout>
 
 
 </LinearLayout>

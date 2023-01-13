@@ -5,5 +5,5 @@ import android.view.View;
 import com.example.teammanagementv2.entities.UserProfile;
 
 public interface AddMemberActivityCallback {
-    public void executeAction(View view, UserProfile user);
+    public void executeAction(UserProfile user);
 }

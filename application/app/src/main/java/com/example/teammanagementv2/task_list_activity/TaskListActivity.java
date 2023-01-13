@@ -1,5 +1,7 @@
 package com.example.teammanagementv2.task_list_activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,12 +53,10 @@ public class TaskListActivity extends AppCompatActivity {
             TextView assignee = container.findViewById(R.id.desc);
             TextView reporter = container.findViewById(R.id.reporter);
             TextView dueDate = container.findViewById(R.id.dueDate);
-            TextView objId = container.findViewById(R.id.objId);
 
             assignee.setText(task.getDesc());
             reporter.setText(task.getReporter());
             dueDate.setText(task.getDueDate().toString());
-            objId.setText(task.getId());
 
             PopupWindow popupWindow = new PopupWindow(container, 800, 800);
             popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -77,7 +77,12 @@ public class TaskListActivity extends AppCompatActivity {
             taskOverviewArrayList.addAll(tasks);
             listAdapter.notifyDataSetChanged();
         });
-        tasksViewModel.loadUserTasks("mvlaicu");
+
+        // get logged in user
+        SharedPreferences sharedPref = this.getSharedPreferences("login", Context.MODE_PRIVATE);
+        String usernameSp = sharedPref.getString("username", null);
+
+        tasksViewModel.loadUserTasks(usernameSp);
         binding.listview.setAdapter(listAdapter);
     }
 }

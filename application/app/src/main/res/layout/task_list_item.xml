@@ -14,17 +14,17 @@
         android:gravity="center"
         android:padding="@dimen/fab_margin"
         android:text="Task Nr"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/taskDesc"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
         android:layout_weight="0"
         android:gravity="center"
         android:padding="@dimen/fab_margin"
         android:text="Description"
-        android:textSize="20sp" />
+        android:textSize="10sp" />
 
     <ImageButton
         android:id="@+id/doneButton"

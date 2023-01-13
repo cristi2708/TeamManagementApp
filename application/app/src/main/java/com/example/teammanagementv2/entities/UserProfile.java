@@ -3,6 +3,8 @@ package com.example.teammanagementv2.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+import java.util.Objects;
+
 public class UserProfile {
     private String firstName;
     private String lastName;
@@ -106,5 +108,18 @@ public class UserProfile {
     @JsonSetter("role")
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserProfile that = (UserProfile) o;
+        return firstName.equals(that.firstName) && lastName.equals(that.lastName) && username.equals(that.username) && passwordHash.equals(that.passwordHash) && email.equals(that.email) && phoneNumber.equals(that.phoneNumber) && role.equals(that.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, username, passwordHash, email, phoneNumber, role);
     }
 }

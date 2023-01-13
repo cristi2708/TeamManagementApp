@@ -10,62 +10,82 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.teammanagementv2.create_team_activity.ActivityCreateTeam;
+import com.example.teammanagementv2.create_team_activity.CreateTeamActivity;
+import com.example.teammanagementv2.databinding.ActivityCreateTeamBinding;
+import com.example.teammanagementv2.databinding.ActivityMainBinding;
+import com.example.teammanagementv2.entities.Team;
 import com.example.teammanagementv2.entities.UserProfile;
-import com.example.teammanagementv2.models.TeamMemberViewModel;
+import com.example.teammanagementv2.manage_team_activity.CreateTaskActivity;
+import com.example.teammanagementv2.models.UserViewModel;
 import com.example.teammanagementv2.task_list_activity.TaskListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button redirectButton;
-    private Button logOutButton;
-
-    private TextView firstNameTV;
-    private TextView lastNameTV;
-    private TextView roleTV;
-
-    private Boolean isLead = false;
+    private ActivityMainBinding activityMainBinding;
+    private UserViewModel userViewModel;
+    private boolean isLead;
+    private boolean hasTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_member);
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(activityMainBinding.getRoot());
 
-        redirectButton = findViewById(R.id.redirectButton);
-        logOutButton = findViewById(R.id.logoutButton);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+    }
 
-        firstNameTV = findViewById(R.id.firstNameTV);
-        lastNameTV = findViewById(R.id.lastNameTV);
-        roleTV = findViewById(R.id.roleTV);
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        TeamMemberViewModel teamMemberViewModel = new ViewModelProvider(this).get(TeamMemberViewModel.class);
+        // retrieve username of logged in user, (was saved in shared prefs when the user logged in)
         SharedPreferences sharedPref = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         String usernameSp = sharedPref.getString("username", null);
 
-        teamMemberViewModel.loadUserProfile(usernameSp);
-        teamMemberViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
+        userViewModel.loadUserProfile(usernameSp);
+        userViewModel.loadUserTeam(usernameSp);
+
+        userViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(UserProfile userProfile) {
                 if (!userProfile.equals(UserProfile.NULL_PROFILE)) {
-                    firstNameTV.setText(userProfile.getFirstName());
-                    lastNameTV.setText(userProfile.getLastName());
-                    roleTV.setText(userProfile.getRole());
+                    activityMainBinding.firstNameTV.setText(userProfile.getFirstName());
+                    activityMainBinding.lastNameTV.setText(userProfile.getLastName());
+                    activityMainBinding.roleTV.setText(userProfile.getRole());
                     if (userProfile.getRole().equals("lead")) {
-                        redirectButton.setText("Manage Team");
+                        activityMainBinding.redirectButton.setText("Manage Team");
                         isLead = true;
+                    } else {
+                        isLead = false;
                     }
                 }
             }
         });
 
-        logOutButton.setOnClickListener(new View.OnClickListener() {
+        userViewModel.getErrorFetching().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                Toast.makeText(getApplicationContext(), "Error fetching data from the API",
+                        Toast.LENGTH_SHORT).show();
+                activityMainBinding.redirectButton.setEnabled(false);
+            }
+        });
+
+        userViewModel.getUserTeam().observe(this, new Observer<Team>() {
+            @Override
+            public void onChanged(Team team) {
+                hasTeam = !team.equals(Team.NULL_TEAM);
+            }
+        });
+
+        activityMainBinding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // delete from sp
+                // delete from shared prefs
                 @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPref.edit();
                 editor.remove("username");
                 editor.remove("password");
@@ -76,16 +96,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        redirectButton.setOnClickListener(new View.OnClickListener() {
+        activityMainBinding.redirectButton.setOnClickListener(new View.OnClickListener() {
+            /*
+            will redirect the user to:
+                -> an activity to create team, if the user is a lead with no team created
+                -> an activity to manage its team, if the user is a lead that has already created a team
+                -> an activity to view it's tasks if the the user is a team member
+                -> if the user does not belong to any team, a toast is displayed
+            */
             @Override
             public void onClick(View view) {
-                Intent intent;
-                if (MainActivity.this.isLead) {
-                    intent = new Intent(getApplicationContext(), ActivityCreateTeam.class);
-                } else
-                    intent = new Intent(getApplicationContext(), TaskListActivity.class);
-                startActivity(intent);
-                finish();
+                if (isLead && hasTeam) {
+                    Toast.makeText(getApplicationContext(), "start manage team activity",
+                            Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(), CreateTaskActivity.class);
+                    intent.putExtra("team_lead_name", usernameSp);
+                    startActivity(intent);
+                }
+                if (isLead && !hasTeam) {
+                    Toast.makeText(getApplicationContext(), "start create team activity",
+                            Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), CreateTeamActivity.class));
+                }
+                if (!isLead && hasTeam) {
+                    Toast.makeText(getApplicationContext(), "start task list activity",
+                            Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), TaskListActivity.class));
+                }
             }
         });
     }

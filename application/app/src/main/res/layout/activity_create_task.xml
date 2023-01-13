@@ -23,18 +23,57 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="60dp"
+            android:layout_margin="10dp"
             android:layout_marginTop="60dp"
             android:gravity="center"
             android:shadowColor="#64567C"
             android:shadowDx="4"
             android:shadowDy="-4"
             android:shadowRadius="4"
-            android:text="Create Your Own Team!"
+            android:text="Create Task:"
             android:textColor="@color/teal_200"
             android:textColorLink="@color/purple_500"
             android:textSize="30sp"
             android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskDescTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginTop="10dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="Description"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/dueDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginTop="10dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="mm/dd/yyyy"
+            android:inputType="text"
+            android:text="Due Date"
+            android:textSize="20sp"
+            app:rippleColor="#00BCD4" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:text="Select Member:"
+            android:textSize="20sp" />
 
         <ListView
             android:id="@+id/listview"
@@ -46,18 +85,6 @@
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="10dp" />
 
-        <EditText
-            android:id="@+id/taskDescTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Team Name"
-            android:textSize="20sp" />
-
         <Button
             android:id="@+id/createTaskButton"
             android:layout_width="wrap_content"
@@ -66,7 +93,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Create Team"
+            android:text="Create Task"
             android:textSize="20sp" />
 
     </LinearLayout>
