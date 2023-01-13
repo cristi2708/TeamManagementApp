@@ -1,12 +1,11 @@
 package com.example.teammanagementv2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.teammanagementv2.databinding.ActivityCreateTaskBinding;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.teammanagementv2.databinding.ActivityLandingBinding;
 
 import java.util.Objects;
@@ -24,7 +23,7 @@ public class LandingActivity extends AppCompatActivity {
         activityLandingBinding.joinUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
                 finish();
             }
         });
@@ -32,7 +31,7 @@ public class LandingActivity extends AppCompatActivity {
         activityLandingBinding.login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
             }
         });
