@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,8 +24,6 @@ import okhttp3.Response;
 public class LoginActivity extends AppCompatActivity {
     private final Executor executor = Executors.newSingleThreadExecutor();
     private Button loginButton;
-    private Button signUpButton;
-
     private EditText username;
     private EditText password;
 
@@ -34,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         SharedPreferences sharedPref = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.loginButton);
-        signUpButton = findViewById(R.id.signUpButton);
 
         username = findViewById(R.id.usernameIdLogin);
         password = findViewById(R.id.passwordIdLogin);
