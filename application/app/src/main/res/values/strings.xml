@@ -12,7 +12,13 @@
     <string name="title_activity_team_member">TeamMemberActivity</string>
 
 
-    <string name="login"><u>I already have an account , login</u></string>
-    <string name="register_text"><u>Register</u></string>
+    <string name="login"><u>If you already have an account, <b>login</b></u></string>
+    <string name="register_text"><u>Registration</u></string>
     <string name="login_text"><u>Login</u></string>
+
+    <string name="spinner_hint">Role</string>
+    <string-array name="roles_array">
+        <item>Team Member</item>
+        <item>Team Lead</item>
+    </string-array>
 </resources>
